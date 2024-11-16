@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.validator.constraints.UUID;
 
 import java.util.List;
 
@@ -13,8 +14,7 @@ import java.util.List;
 @Table(name = "users")
 public class Users {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @UUID
     private Long id;
 
     @Column(name = "username")

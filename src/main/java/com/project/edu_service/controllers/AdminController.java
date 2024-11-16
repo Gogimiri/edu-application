@@ -18,13 +18,13 @@ public class AdminController {
     private final UserService userService;
     private final CommentRepositry commentRepositry;
 
-    //ПОЛУЧЕНИЕ ВСЕХПОЛЬЗОВАТЕЛЕЙ НАПРЯМУЮ ИЗ РЕПОЗИТОРИЯ:::
+    /**ПОЛУЧЕНИЕ ВСЕХПОЛЬЗОВАТЕЛЕЙ НАПРЯМУЮ ИЗ РЕПОЗИТОРИЯ**/
     @GetMapping("/all")
     public List<Users> getAllUsers() {
         return userService.getAllUsers();
     }
 
-    //УДАЛЕНИЕ ПОЛЬЗОВАТЕЛЯ ПО username:::
+    /**УДАЛЕНИЕ ПОЛЬЗОВАТЕЛЯ ПО username**/
     @DeleteMapping("/{username}")
     public ResponseEntity<String> deleteUserByUsername(@PathVariable String username) {
         userService.deleteUserByUsername(username);
@@ -32,7 +32,7 @@ public class AdminController {
         return new  ResponseEntity<>(HttpStatus.OK);
     }
 
-    //УДАЛЕНИЕ ПОЛЬЗХОВАТЕЛЯ ПО id:::
+    /**УДАЛЕНИЕ ПОЛЬЗХОВАТЕЛЯ ПО id**/
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteUserById(@PathVariable Long id) {
         userService.deleteUserById(id);
@@ -40,7 +40,7 @@ public class AdminController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    //УДАЛЕНИЕ КОММЕНТАРИЯ ПО ЕГО id:::
+    /**УДАЛЕНИЕ КОММЕНТАРИЯ ПО ЕГО id**/
     @DeleteMapping("/comment/{id}")
     public ResponseEntity<String> deleteCommentById(@PathVariable Long id) {
         commentRepositry.deleteById(id);

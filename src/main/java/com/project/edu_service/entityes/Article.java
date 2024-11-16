@@ -4,8 +4,10 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.validator.constraints.UUID;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -13,8 +15,7 @@ import java.util.List;
 @Setter
 @Table(name = "article")
 public class Article {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @UUID
     private Long articleId;
 
     @ManyToOne
@@ -22,7 +23,7 @@ public class Article {
     private Users users;
 
     @OneToMany(mappedBy = "article", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    List<Comment> comments;
+    List<Comment> comments = new ArrayList<>();
 
     @Column(name = "title")
     private String title;

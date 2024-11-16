@@ -3,6 +3,7 @@ package com.project.edu_service.entityes;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.validator.constraints.UUID;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -12,8 +13,7 @@ import java.util.List;
 @Setter
 public class Lesson {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @UUID
     private Long lessonId;
 
     @Column(name = "title")

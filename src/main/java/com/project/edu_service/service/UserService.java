@@ -24,37 +24,37 @@ public class UserService {
         userRepository.save(users);
     }
 
-    //ПРОВЕРКА ПОЛЬЗОВАТЕЛЯ НА НАЛИЧИЕ:::
+    /**ПРОВЕРКА ПОЛЬЗОВАТЕЛЯ НА НАЛИЧИЕ**/
     public boolean userExists(String username) {
 
         return userRepository.existsByUsername(username);
     }
 
-    //ПОЛУЧЕНИЕ ПОЛЬЗОВАТЕЛЯ ПО ЕГО username:::
+    /**ПОЛУЧЕНИЕ ПОЛЬЗОВАТЕЛЯ ПО ЕГО username**/
     public Users getByUsername(String username) {
         return userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Пользователь не найден"));
     }
 
-    //ПОЛУЧЕНИЕ ПОЛЬЗОВАТЕЛЯ КОТОРЫЙ АВТОРИЗИРОВАН:::
+    /**ПОЛУЧЕНИЕ ПОЛЬЗОВАТЕЛЯ КОТОРЫЙ АВТОРИЗИРОВАН**/
     public Users getCurrentUser() {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         return getByUsername(username);
     }
 
-    //ПОЛУЧЕНИЕ ВСЕХ ПОЛЬЗОВАТЕЛЕЙ НАПРЯМУЮ ИЗ РЕПОЗИТОРИЯ:::
+    /**ПОЛУЧЕНИЕ ВСЕХ ПОЛЬЗОВАТЕЛЕЙ НАПРЯМУЮ ИЗ РЕПОЗИТОРИЯ**/
     public List<Users> getAllUsers() {
         return userRepository.findAll();
     }
 
-    //УДАЛЕНИЕ ПОЛЬЗОВАТЕЛЯ ПО ЕГО username:::
+    /**УДАЛЕНИЕ ПОЛЬЗОВАТЕЛЯ ПО ЕГО username**/
     @Transactional
     public void deleteUserByUsername(String username) {
 
         userRepository.deleteByUsername(username);
     }
 
-    //УДАЛЕНИЕ ПОЛЬЗОВАТЕЛЕЙ ПО ЕГО id:::
+    /**УДАЛЕНИЕ ПОЛЬЗОВАТЕЛЕЙ ПО ЕГО id**/
     public void deleteUserById(Long id) {
 
         userRepository.deleteById(id);

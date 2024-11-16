@@ -4,14 +4,14 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.validator.constraints.UUID;
 
 @Entity
 @Getter
 @Setter
 public class PlaylistLesson {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @UUID
     private Long playlistCourseId;
 
     @ManyToOne

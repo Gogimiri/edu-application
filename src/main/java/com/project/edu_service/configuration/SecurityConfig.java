@@ -21,8 +21,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     private final JwtFilter jwtFilter;
-
-    //НАСТРОЙКА ФИЛЬТРОВ АВТОРИЗАЦИИ:::
+    /**НАСТРОЙКА ФИЛЬТРОВ АВТОРИЗАЦИИ**/
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http

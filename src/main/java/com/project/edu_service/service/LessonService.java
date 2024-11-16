@@ -30,7 +30,7 @@ public class LessonService {
     private final PlaylistLessonRepository playlistLessonRepository;
     private static final Logger logger = LoggerFactory.getLogger(UserService.class);
 
-    //ДОБАВЛЕНИЕ УРОКА:::
+    /**ДОБАВЛЕНИЕ УРОКА**/
     @Transactional
     public void save(Lesson lesson) {
         lesson.setUsers(userService.getCurrentUser());
@@ -39,7 +39,7 @@ public class LessonService {
         lessonRepository.save(lesson);
     }
 
-    //ДОБАВЛЕНИЕ КОММЕНТАРИЯ:::
+    /**ДОБАВЛЕНИЕ КОММЕНТАРИЯ**/
     @Transactional
     public void addComment(String title, Comment comment) {
         Lesson lesson = lessonRepository.findByTitle(title)
@@ -52,7 +52,7 @@ public class LessonService {
         commentRepositry.save(comment);
     }
 
-    //ДОБАВЛЕНИЕ ОТВЕТА НА КОММЕНТАРИЙ:::
+    /**ДОБАВЛЕНИЕ ОТВЕТА НА КОММЕНТАРИЙ**/
     @Transactional
     public void addReply(Long parentId, Comment reply) {
         Comment parantComment = commentRepositry.findById(parentId)
@@ -66,7 +66,7 @@ public class LessonService {
         commentRepositry.save(reply);
     }
 
-    //ДОБАВЛЕНИЕ ПЛЭЙЛИСТА:::
+    /**ДОБАВЛЕНИЕ ПЛЭЙЛИСТА**/
     @Transactional
     public void addPLaylist(String title) {
         logger.info("title insert into methot: {}", title);
@@ -78,7 +78,7 @@ public class LessonService {
         playlistRepository.save(playlist);
     }
 
-    //ДОБАВЛЕНИЕ УРОКА В ПЛЭЙЛИСТ:::
+    /**ДОБАВЛЕНИЕ УРОКА В ПЛЭЙЛИСТ**/
     @Transactional
     public void addLessonToPlaylist(Long playlistId, Long lessonId) {
         Playlist playlist = playlistRepository.findById(playlistId)
@@ -92,7 +92,7 @@ public class LessonService {
         playlistLessonRepository.save(playlistLesson);
     }
 
-    //ПОЛУЧЕНИЕ ВСЕХ КОММЕНТАРИЕВ ПО ЗАГОЛОВКУ СТАТЬИ:::
+    /**ПОЛУЧЕНИЕ ВСЕХ КОММЕНТАРИЕВ ПО ЗАГОЛОВКУ СТАТЬИ**/
     @Transactional
     public List<CommentDtoResp> getAllCommentsByLessonTitle(String title) {
         Lesson lesson = lessonRepository.findByTitle(title)
@@ -115,19 +115,19 @@ public class LessonService {
         return commentDtoResps;
     }
 
-    //ПОЛУЧЕНИЕ УРОКОВ ПО ЗАГОЛОВКУ:::
+    /**ПОЛУЧЕНИЕ УРОКОВ ПО ЗАГОЛОВКУ**/
     @Transactional
     public void deleteByTitle(String title) {
         lessonRepository.deleteByTitle(title);
     }
 
-    //УДАЛЕНИЕ УРОКА ПО id:::
+    /**УДАЛЕНИЕ УРОКА ПО id**/
     @Transactional
     public void deleteById(Long id) {
         lessonRepository.deleteById(id);
     }
 
-    //ПОЛУЧЕНИЕ ВСЕХ УРОКОВ:::
+    /**ПОЛУЧЕНИЕ ВСЕХ УРОКОВ**/
     @Transactional
     public List<LessonDtoResp> getAll() {
         logger.info("into get All method");
@@ -144,7 +144,7 @@ public class LessonService {
                 .collect(Collectors.toList());
     }
 
-    //ПОЛУЧЕНИЕ ВСЕХ УРОКОВ НАПРЯМУЮ ИЗ РЕПОЗИТОРИЕВ:::
+    /**ПОЛУЧЕНИЕ ВСЕХ УРОКОВ НАПРЯМУЮ ИЗ РЕПОЗИТОРИЕВ**/
     public List<Lesson>getAllWithAllInfo() {
         return lessonRepository.findAll();
     }

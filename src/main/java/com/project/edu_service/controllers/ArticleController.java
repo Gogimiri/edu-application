@@ -34,19 +34,19 @@ public class ArticleController {
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 
-    //ПОЛУЧЕНИЕ ВСЕХ СТАТЕЙ
+    /**ПОЛУЧЕНИЕ ВСЕХ СТАТЕЙ**/
     @GetMapping("/{title}")
     public ArticleDtoResp getArticelByTitle(@PathVariable String title) {
         return articleService.getByTitle(title);
     }
 
-    //ПОЛУЧИТЬ ВСЕ КОММЕНТАРИИ ПОД СТАТЬЕЙ
+    /**ПОЛУЧИТЬ ВСЕ КОММЕНТАРИИ ПОД СТАТЬЕЙ**/
     @GetMapping("/comments/{title}")
     public List<CommentDtoResp> getAllCommentsByArticleTitle(@PathVariable String title) {
         return articleService.getAllCommentsByArticleTitle(title);
     }
 
-    //ДОБАВЛЕНИЕ КОММЕНТАРИЯ:::
+    /**ДОБАВЛЕНИЕ КОММЕНТАРИЯ**/
     @PostMapping("/comment/{title}")
     public ResponseEntity<String>setComment(@PathVariable String title, @RequestBody CommentDto commentDto) {
         articleService.addComment(title, commentMapper.toEntity(commentDto));
@@ -54,7 +54,7 @@ public class ArticleController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    //ДОБАВЛЕНИЕ ОТВЕТА НА КОММЕНТАРИЙ:::
+    /**ДОБАВЛЕНИЕ ОТВЕТА НА КОММЕНТАРИЙ**/
     @PostMapping("/comment/reply/{parentId}")
     public ResponseEntity<String>setReply(@PathVariable Long parentId, @RequestBody CommentDto commentDto) {
         articleService.addReply(parentId, commentMapper.toEntity(commentDto));
@@ -62,7 +62,7 @@ public class ArticleController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    //УДАЛЕНИЕ СТАТЬИ ПО ЗАГОЛОВКУ:::
+    /**УДАЛЕНИЕ СТАТЬИ ПО ЗАГОЛОВКУ**/
     @DeleteMapping("/{title}")
     public ResponseEntity<String> deleteArticleById(String title) {
         articleService.deleteByTitle(title);
