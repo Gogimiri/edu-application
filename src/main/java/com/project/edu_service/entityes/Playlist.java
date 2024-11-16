@@ -4,17 +4,18 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.validator.constraints.UUID;
 
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.UUID;
 
 @Entity
 @Getter
 @Setter
 public class Playlist {
-    @UUID
-    private Long playlistId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID playlistId;
 
     @ManyToOne
     @JoinColumn(name = "users_id")

@@ -4,19 +4,21 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.validator.constraints.UUID;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Getter
 @Setter
 @Table(name = "article")
 public class Article {
-    @UUID
-    private Long articleId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID articleId;
 
     @ManyToOne
     @JoinColumn(name = "users_id")
@@ -31,6 +33,7 @@ public class Article {
     @Column(name = "content")
     private String content;
 
+    @CreationTimestamp
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 }

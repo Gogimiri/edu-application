@@ -4,19 +4,21 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.validator.constraints.UUID;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Getter
 @Setter
 public class Comment {
 
-    @UUID
-    private Long commentId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID commentId;
 
     @ManyToOne
     @JoinColumn(name = "article_id")
@@ -35,7 +37,7 @@ public class Comment {
     private Lesson lesson;
 
     @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Comment> replies;
+    private List<Comment> replies = new ArrayList<>();
 
     @Column(name = "content")
     private String content;

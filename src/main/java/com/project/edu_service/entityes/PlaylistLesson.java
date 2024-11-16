@@ -4,15 +4,17 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.validator.constraints.UUID;
+
+import java.util.UUID;
 
 @Entity
 @Getter
 @Setter
 public class PlaylistLesson {
 
-    @UUID
-    private Long playlistCourseId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID playlistCourseId;
 
     @ManyToOne
     @JoinColumn(name = "playlist_id")

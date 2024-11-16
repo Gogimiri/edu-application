@@ -1,20 +1,22 @@
 package com.project.edu_service.entityes;
 
 import jakarta.persistence.*;
+import lombok.Generated;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.validator.constraints.UUID;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Getter
 @Setter
 public class Lesson {
-
-    @UUID
-    private Long lessonId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID lessonId;
 
     @Column(name = "title")
     private String title;
@@ -29,7 +31,7 @@ public class Lesson {
     private Users users;
 
     @OneToMany(mappedBy = "lesson", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    List<Comment> comments;
+    List<Comment> comments = new ArrayList<>();
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;

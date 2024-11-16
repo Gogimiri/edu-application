@@ -4,9 +4,10 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.validator.constraints.UUID;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -14,8 +15,9 @@ import java.util.List;
 @Table(name = "users")
 public class Users {
 
-    @UUID
-    private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
 
     @Column(name = "username")
     private String username;
@@ -28,10 +30,10 @@ public class Users {
     private Role role;
 
     @OneToMany(mappedBy = "users", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Article> articles;
+    private List<Article> articles = new ArrayList<>();
 
     @OneToMany(mappedBy = "users", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Comment> comments;
+    private List<Comment> comments = new ArrayList<>();
 }
 
 
