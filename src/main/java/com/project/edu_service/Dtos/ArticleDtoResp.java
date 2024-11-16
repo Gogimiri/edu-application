@@ -1,9 +1,10 @@
 package com.project.edu_service.Dtos;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.Optional;
 
 @Getter
 @Setter
@@ -14,7 +15,7 @@ public class ArticleDtoResp {
 
     private String title;
 
-    private Long commentCount;
+    private Optional<Long> commentCount;
 
     private String authorName;
 }

@@ -1,10 +1,11 @@
 package com.project.edu_service.entityes;
 
 import jakarta.persistence.*;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ import java.util.UUID;
 @Setter
 @Table(name = "article")
 public class Article {
+
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID articleId;
@@ -24,6 +26,7 @@ public class Article {
     @JoinColumn(name = "users_id")
     private Users users;
 
+    @LazyCollection(LazyCollectionOption.EXTRA)
     @OneToMany(mappedBy = "article", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     List<Comment> comments = new ArrayList<>();
 

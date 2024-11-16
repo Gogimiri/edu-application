@@ -1,7 +1,6 @@
 package com.project.edu_service.entityes;
 
 import jakarta.persistence.*;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
