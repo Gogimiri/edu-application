@@ -8,6 +8,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -23,9 +24,9 @@ import java.io.IOException;
 
 @Configuration
 @RequiredArgsConstructor
+@Slf4j
 public class JwtFilter extends OncePerRequestFilter {
 
-    private static final Logger logger = LoggerFactory.getLogger(JwtFilter.class);
     private final JwtUtil jwtUtil;
     private final UserDetailsServiceImpl userDetailsServiceImpl;
 
@@ -34,20 +35,20 @@ public class JwtFilter extends OncePerRequestFilter {
                                     FilterChain filterChain) throws ServletException, IOException {
         String authHeader = request.getHeader("Authorization");
 
-        logger.info("Authorization header: {}", authHeader); //
+        log.info("Authorization header: {}", authHeader); //
         if(!StringUtils.isEmpty(authHeader) && authHeader.startsWith("Bearer ")) {
             String jwt = authHeader.substring(7);
-            logger.info("Extracted JWT: {}", jwt);
+            log.info("Extracted JWT: {}", jwt);
 
             if(jwt.isBlank()) {
-                logger.warn("JWT is empty.");
+                log.warn("JWT is empty.");
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST,"your jwt is empty bro");
             } else  {
 
                 try {
 
                     String username = jwtUtil.validateTokenAndRetrieveClaim(jwt);
-                    logger.info("Valid JWT for user: {}", username);
+                    log.info("Valid JWT for user: {}", username);
                     UserDetails userDetails = userDetailsServiceImpl.loadUserByUsername(username);
 
                     UsernamePasswordAuthenticationToken authenticationToken =
@@ -56,10 +57,10 @@ public class JwtFilter extends OncePerRequestFilter {
 
                     if (SecurityContextHolder.getContext().getAuthentication() == null) {
                         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-                        logger.info("Authentication set for user: {}", username);
+                        log.info("Authentication set for user: {}", username);
                     }
                 } catch (JWTVerificationException e) {
-                    logger.error("JWT verification failed: {}", e.getMessage());
+                    log.error("JWT verification failed: {}", e.getMessage());
                     response.sendError(HttpServletResponse.SC_BAD_REQUEST,
                             "no no no bro, something problem with your jwt");
                 }

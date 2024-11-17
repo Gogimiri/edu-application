@@ -9,6 +9,7 @@ import com.project.edu_service.security.JwtUtil;
 import com.project.edu_service.service.UserService;
 import lombok.RequiredArgsConstructor;
 
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -24,6 +25,7 @@ import java.util.Map;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/auth")
+@Slf4j
 public class AuthController {
 
     private final JwtUtil jwtUtil;
@@ -32,20 +34,18 @@ public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final PasswordEncoder passwordEncoder;
 
-    private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
-
     @PostMapping("/registration")
     public Map<String, String> performRegistration(@RequestBody UserDto userDto) {
 
         if (userService.userExists(userDto.getUsername())) {
-            logger.warn("User already exists: {}", userDto.getUsername());
+            log.warn("User already exists: {}", userDto.getUsername());
             throw new UserAlreadyExistsException("Пользователь с таким именем уже существует");
         }
-        logger.info("authDto insert: {}", userDto);
+        log.info("authDto insert: {}", userDto);
         Users users = userMapper.toEntity(userDto);
         users.setRole(Role.USER);
         users.setPassword(passwordEncoder.encode(users.getPassword()));
-        logger.info("User before set role: {}", users);
+        log.info("User before set role: {}", users);
         userService.registration(users);
         return Map.of("jwt",jwtUtil.generateToken(users.getUsername(), users.getRole()));
     }

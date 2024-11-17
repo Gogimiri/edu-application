@@ -12,6 +12,7 @@ import com.project.edu_service.repository.PlaylistLessonRepository;
 import com.project.edu_service.repository.PlaylistRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -23,12 +24,12 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class LessonService {
     private final UserService userService;
     private final LessonRepository lessonRepository;
     private final CommentRepositry commentRepositry;private final PlaylistRepository playlistRepository;
     private final PlaylistLessonRepository playlistLessonRepository;
-    private static final Logger logger = LoggerFactory.getLogger(UserService.class);
 
     /**ДОБАВЛЕНИЕ УРОКА**/
     @Transactional
@@ -69,7 +70,7 @@ public class LessonService {
     /**ДОБАВЛЕНИЕ ПЛЭЙЛИСТА**/
     @Transactional
     public void addPLaylist(String title) {
-        logger.info("title insert into methot: {}", title);
+        log.info("title insert into methot: {}", title);
         Playlist playlist = new Playlist();
         playlist.setTitle(title);
         playlist.setUsers(userService.getCurrentUser());
@@ -130,7 +131,7 @@ public class LessonService {
     /**ПОЛУЧЕНИЕ ВСЕХ УРОКОВ**/
     @Transactional
     public List<LessonDtoResp> getAll() {
-        logger.info("into get All method");
+        log.info("into get All method");
         List<Lesson> lessons = lessonRepository.findAll();
 
         return lessons.stream()

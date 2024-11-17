@@ -28,13 +28,12 @@ public class ArticleController {
     @PostMapping("/add")
     public ResponseEntity<String> saveArticle(@RequestBody ArticleDto articleDto) {
         Article article = articleMapper.toEntity(articleDto);
-
-
         articleService.save(article);
+
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 
-    /**ПОЛУЧЕНИЕ ВСЕХ СТАТЕЙ**/
+    /**ПОЛУЧЕНИЕ СТАТЬИ ПО ЗАГОЛОВКУ**/
     @GetMapping("/{title}")
     public ArticleDtoResp getArticelByTitle(@PathVariable String title) {
         return articleService.getByTitle(title);

@@ -27,8 +27,8 @@ public class ArticleService {
 
     private final ArticleRepository articleRepository;
     private final UserService userService;
-    private final CommentRepositry commentRepositry;
-    private final EntityManager entityManager;
+    private final CommentRepositry commentRepository;
+
 
     @Transactional
     public void save (Article article) {
@@ -44,11 +44,10 @@ public class ArticleService {
         Article article = articleRepository.findByTitle(title)
                 .orElseThrow(() -> new RuntimeException("Статья не найдена"));
 
-
-        Optional<Long> commentCount = Optional.of(getCommentCountFromDatabase(article));
+        long commentCount = commentRepository.countByArticleId(article.getArticleId());
         String authorName = article.getUsers().getUsername();
 
-        return new ArticleDtoResp(article.getContent(), article.getTitle(), commentCount, authorName);
+        return new ArticleDtoResp(article.getContent(), article.getTitle(), Optional.of(commentCount), authorName);
     }
 
 
@@ -61,12 +60,12 @@ public class ArticleService {
         comment.setUsers(userService.getCurrentUser());
         comment.setCreatedAt(LocalDateTime.now());
 
-        commentRepositry.save(comment);
+        commentRepository.save(comment);
     }
 
     @Transactional
     public void addReply(Long parentId, Comment reply) {
-        Comment parantComment = commentRepositry.findById(parentId)
+        Comment parantComment = commentRepository.findById(parentId)
                 .orElseThrow(() -> new RuntimeException("parent не найден"));
 
         reply.setArticle(parantComment.getArticle());
@@ -74,15 +73,21 @@ public class ArticleService {
         reply.setCreatedAt(LocalDateTime.now());
         reply.setParent(parantComment);
 
-        commentRepositry.save(reply);
+        commentRepository.save(reply);
     }
 
     @Transactional
     public List<CommentDtoResp> getAllCommentsByArticleTitle(String title) {
-        Article article = articleRepository.findByTitle(title)
-                .orElseThrow(() -> new RuntimeException("Статья не найдена"));
 
-        List<Comment> comments = article.getComments();
+        Article article = articleRepository.findByTitle(title)
+                .orElseThrow(() -> new RuntimeException("Статья не найдена с заголовком: " + title));
+
+        List<Comment> comments = commentRepository.findAllByArticleTitle(title);
+
+        if (comments.isEmpty()) {
+            throw new RuntimeException("Комментарии не найдены для статьи с заголовком: " + title);
+        }
+
         List<CommentDtoResp> commentDtoResps = new ArrayList<>();
 
         for (Comment comment : comments) {
@@ -90,7 +95,7 @@ public class ArticleService {
 
             CommentDtoResp commentDto = new CommentDtoResp(
                     comment.getUsers().getUsername(),
-                    article.getTitle(),
+                    comment.getArticle().getTitle(),
                     parentUsername,
                     comment.getContent()
             );
@@ -108,9 +113,5 @@ public class ArticleService {
         return articleRepository.findAll();
     }
 
-    private long getCommentCountFromDatabase(Article article) {
-        return entityManager.createQuery("SELECT COUNT(c) FROM Comment c WHERE c.article.id = :articleId", Long.class)
-                .setParameter("articleId", article.getArticleId())
-                .getSingleResult();
-    }
+
 }

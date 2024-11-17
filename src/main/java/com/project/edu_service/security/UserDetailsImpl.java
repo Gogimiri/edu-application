@@ -2,6 +2,7 @@ package com.project.edu_service.security;
 
 import com.project.edu_service.entityes.Users;
 import com.project.edu_service.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.GrantedAuthority;
@@ -13,10 +14,9 @@ import java.util.Collection;
 import java.util.List;
 
 @Component
-
+@Slf4j
 public class UserDetailsImpl implements UserDetails {
 
-    private static final Logger logger = LoggerFactory.getLogger(UserService.class);
     private final Users users;
 
     public UserDetailsImpl(Users users) {
@@ -26,7 +26,7 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        logger.info("User into UserDetailsImpl {}", users);
+        log.info("User into UserDetailsImpl {}", users);
         return List.of(new SimpleGrantedAuthority(users.getRole().name()));
     }
 
